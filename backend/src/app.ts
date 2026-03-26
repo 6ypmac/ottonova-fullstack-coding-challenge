@@ -19,45 +19,59 @@ type City = {
   landmarks: string[];
 };
 
+type CityNormalized = Omit<City, "population"> & {
+  population: number;
+};
+
 const cities: City[] = citiesData.cities;
 
-app.get("/cities", (req, res) => {
-  const { search, continent } = req.query;
-
-  let result = cities.map((city) => ({
+function normalizeCities(cities: City[]): CityNormalized[] {
+  return cities.map((city) => ({
     ...city,
     population: Number(city.population),
   }));
+}
 
-  // search by name
-  if (typeof search === "string" && search.trim() !== "") {
-    const searchLower = search.toLowerCase();
+function searchCities(cities: CityNormalized[], search?: string) {
+  if (!search || search.trim() === "") return cities;
 
-    result = result.filter((city) =>
-      city.name.toLowerCase().includes(searchLower),
-    );
+  const searchLower = search.toLowerCase();
+
+  return cities.filter((city) => city.name.toLowerCase().includes(searchLower));
+}
+
+function filterCities(cities: CityNormalized[], continent?: string) {
+  if (!continent || continent.trim() === "") return cities;
+
+  return cities.filter((city) => city.continent === continent);
+}
+
+function sortCities(cities: CityNormalized[], sort?: string): CityNormalized[] {
+  if (!sort) return cities;
+
+  const [field, order] = sort.split(":");
+
+  if (field === "population") {
+    return [...cities].sort((a, b) => {
+      if (order === "desc") {
+        return b.population - a.population;
+      }
+      return a.population - b.population;
+    });
   }
 
-  // filter by continent
-  if (typeof continent === "string" && continent.trim() !== "") {
-    result = result.filter((city) => city.continent === continent);
-  }
+  return cities;
+}
 
-  // sorting
+app.get("/cities", (req, res) => {
+  const search = req.query.search?.toString();
+  const continent = req.query.continent?.toString();
   const sort = req.query.sort?.toString();
 
-  if (typeof sort === "string" && sort.trim() !== "") {
-    const [field, order] = sort.split(":");
-
-    if (field === "population") {
-      result.sort((a, b) => {
-        if (order === "desc") {
-          return b.population - a.population;
-        }
-        return a.population - b.population;
-      });
-    }
-  }
+  let result = normalizeCities(cities);
+  result = searchCities(result, search);
+  result = filterCities(result, continent);
+  result = sortCities(result, sort);
 
   res.json({
     data: result,
