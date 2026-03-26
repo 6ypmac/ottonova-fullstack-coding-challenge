@@ -22,9 +22,27 @@ type City = {
 const cities: City[] = citiesData.cities;
 
 app.get("/cities", (req, res) => {
+  const { search, continent } = req.query;
+
+  let result = [...cities];
+
+  // search by name
+  if (typeof search === "string" && search.trim() !== "") {
+    const searchLower = search.toLowerCase();
+
+    result = result.filter((city) =>
+      city.name.toLowerCase().includes(searchLower),
+    );
+  }
+
+  // filter by continent
+  if (typeof continent === "string" && continent.trim() !== "") {
+    result = result.filter((city) => city.continent === continent);
+  }
+
   res.json({
-    data: cities,
-    total: cities.length,
+    data: result,
+    total: result.length,
   });
 });
 
