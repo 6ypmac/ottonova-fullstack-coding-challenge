@@ -46,32 +46,51 @@ function filterCities(cities: CityNormalized[], continent?: string) {
   return cities.filter((city) => city.continent === continent);
 }
 
-function sortCities(cities: CityNormalized[], sort?: string): CityNormalized[] {
-  if (!sort) return cities;
+function parseSort(
+  sort?: string,
+): { field: "population"; order: "asc" | "desc" } | null {
+  if (!sort) return null;
 
   const [field, order] = sort.split(":");
 
-  if (field === "population") {
-    return [...cities].sort((a, b) => {
-      if (order === "desc") {
-        return b.population - a.population;
-      }
-      return a.population - b.population;
-    });
-  }
+  if (field !== "population") return null;
+  if (order !== "asc" && order !== "desc") return null;
 
-  return cities;
+  return { field, order };
+}
+
+function sortCities(
+  cities: CityNormalized[],
+  sort: { field: "population"; order: "asc" | "desc" },
+): CityNormalized[] {
+  return [...cities].sort((a, b) => {
+    if (sort.order === "desc") {
+      return b.population - a.population;
+    }
+    return a.population - b.population;
+  });
 }
 
 app.get("/cities", (req, res) => {
   const search = req.query.search?.toString();
   const continent = req.query.continent?.toString();
-  const sort = req.query.sort?.toString();
+  const sortParam = req.query.sort?.toString();
+
+  const parsedSort = parseSort(sortParam);
+  if (sortParam && !parsedSort) {
+    return res.status(400).json({
+      error:
+        "Invalid sort parameter. Use 'population:asc' or 'population:desc'.",
+    });
+  }
 
   let result = normalizeCities(cities);
   result = searchCities(result, search);
   result = filterCities(result, continent);
-  result = sortCities(result, sort);
+
+  if (parsedSort) {
+    result = sortCities(result, parsedSort);
+  }
 
   res.json({
     data: result,
