@@ -24,7 +24,10 @@ const cities: City[] = citiesData.cities;
 app.get("/cities", (req, res) => {
   const { search, continent } = req.query;
 
-  let result = [...cities];
+  let result = cities.map((city) => ({
+    ...city,
+    population: Number(city.population),
+  }));
 
   // search by name
   if (typeof search === "string" && search.trim() !== "") {
@@ -38,6 +41,22 @@ app.get("/cities", (req, res) => {
   // filter by continent
   if (typeof continent === "string" && continent.trim() !== "") {
     result = result.filter((city) => city.continent === continent);
+  }
+
+  // sorting
+  const sort = req.query.sort?.toString();
+
+  if (typeof sort === "string" && sort.trim() !== "") {
+    const [field, order] = sort.split(":");
+
+    if (field === "population") {
+      result.sort((a, b) => {
+        if (order === "desc") {
+          return b.population - a.population;
+        }
+        return a.population - b.population;
+      });
+    }
   }
 
   res.json({
