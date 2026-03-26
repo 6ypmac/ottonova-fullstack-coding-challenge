@@ -26,10 +26,14 @@ type CityNormalized = Omit<City, "population"> & {
 const cities: City[] = citiesData.cities;
 
 function normalizeCities(cities: City[]): CityNormalized[] {
-  return cities.map((city) => ({
-    ...city,
-    population: Number(city.population),
-  }));
+  return cities.map((city) => {
+    const parsedPopulation = Number(city.population);
+
+    return {
+      ...city,
+      population: Number.isNaN(parsedPopulation) ? 0 : parsedPopulation,
+    };
+  });
 }
 
 function searchCities(cities: CityNormalized[], search?: string) {
