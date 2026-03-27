@@ -39,7 +39,7 @@ function normalizeCities(cities: City[]): CityNormalized[] {
 function searchCities(cities: CityNormalized[], search?: string) {
   if (!search || search.trim() === "") return cities;
 
-  const searchLower = search.toLowerCase();
+  const searchLower = search.trim().toLowerCase();
 
   return cities.filter((city) => city.name.toLowerCase().includes(searchLower));
 }
@@ -47,7 +47,11 @@ function searchCities(cities: CityNormalized[], search?: string) {
 function filterCities(cities: CityNormalized[], continent?: string) {
   if (!continent || continent.trim() === "") return cities;
 
-  return cities.filter((city) => city.continent === continent);
+  const normalizedContinent = continent.trim().toLowerCase();
+
+  return cities.filter(
+    (city) => city.continent.toLowerCase() === normalizedContinent,
+  );
 }
 
 function parseSort(
@@ -75,6 +79,21 @@ function sortCities(
   });
 }
 
+function successResponse<T>(data: T, total: number) {
+  return {
+    success: true,
+    data,
+    total,
+  };
+}
+
+function errorResponse(message: string) {
+  return {
+    success: false,
+    error: message,
+  };
+}
+
 app.get("/cities", (req, res) => {
   const search = req.query.search?.toString();
   const continent = req.query.continent?.toString();
@@ -82,10 +101,13 @@ app.get("/cities", (req, res) => {
 
   const parsedSort = parseSort(sortParam);
   if (sortParam && !parsedSort) {
-    return res.status(400).json({
-      error:
-        "Invalid sort parameter. Use 'population:asc' or 'population:desc'.",
-    });
+    return res
+      .status(400)
+      .json(
+        errorResponse(
+          "Invalid sort parameter. Use 'population:asc' or 'population:desc'.",
+        ),
+      );
   }
 
   let result = normalizeCities(cities);
@@ -96,18 +118,14 @@ app.get("/cities", (req, res) => {
     result = sortCities(result, parsedSort);
   }
 
-  res.json({
-    data: result,
-    total: result.length,
-  });
+  res.json(successResponse(result, result.length));
 });
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-const PORT = 3000;
+export { normalizeCities, searchCities, filterCities, sortCities, parseSort };
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+export default app;
+export type { City, CityNormalized };
