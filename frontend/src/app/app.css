@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+ul {
+  padding-left: 1rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}

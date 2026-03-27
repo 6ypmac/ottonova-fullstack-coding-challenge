@@ -1,0 +1,7 @@
+<h1>Cities</h1>
+
+<ul>
+  @for (city of cities; track city.name) {
+    <li>{{ city.name }} — {{ city.country }} — {{ city.population }}</li>
+  }
+</ul>
