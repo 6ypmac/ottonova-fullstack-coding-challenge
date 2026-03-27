@@ -15,6 +15,7 @@ This project contains a simple fullstack application:
 ### GET /cities
 
 Returns a list of cities with optional filtering and sorting.
+Response format is consistent for both success and error cases.
 
 ### Query parameters
 
@@ -29,9 +30,18 @@ Returns a list of cities with optional filtering and sorting.
 
 ---
 
+### Behavior
+
+- Search is case-insensitive
+- Continent filter is case-insensitive
+- Invalid sort parameter returns HTTP 400
+- If no filters are provided, all cities are returned
+
+---
+
 ### Examples
 
-```
+```http
 GET /cities
 GET /cities?search=to
 GET /cities?continent=Europe
@@ -45,13 +55,13 @@ GET /cities?sort=population:desc
 
 ```json
 {
+  "success": true,
   "data": [
     {
       "name": "Tokyo",
       "country": "Japan",
       "continent": "Asia",
       "population": 13960000
-      ...
     }
   ],
   "total": 1
@@ -66,6 +76,7 @@ GET /cities?sort=population:desc
 
 ```json
 {
+  "success": false,
   "error": "Invalid sort parameter. Use 'population:asc' or 'population:desc'."
 }
 ```
