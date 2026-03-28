@@ -1,7 +1,34 @@
-<h1>Cities</h1>
+<input
+  type="text"
+  placeholder="Search..."
+  [(ngModel)]="search"
+  (ngModelChange)="onSearchInput($event)"
+/>
 
-<ul>
-  @for (city of cities; track city.name) {
-    <li>{{ city.name }} — {{ city.country }} — {{ city.population }}</li>
-  }
-</ul>
+<select [(ngModel)]="continent" (ngModelChange)="onContinentChange($event)">
+  <option value="">All continents</option>
+  <option value="Europe">Europe</option>
+  <option value="Asia">Asia</option>
+</select>
+
+<select [(ngModel)]="sort" (ngModelChange)="onSortChange($event)">
+  <option value="">No sorting</option>
+  <option value="population:asc">Population ↑</option>
+  <option value="population:desc">Population ↓</option>
+</select>
+
+@if (isLoading) {
+  <p>Loading...</p>
+}
+
+@if (error) {
+  <p>{{ error }}</p>
+}
+
+@if (!isLoading && !error) {
+  <ul>
+    @for (city of cities; track city.name) {
+      <li>{{ city.name }} — {{ city.country }} — {{ city.population }}</li>
+    }
+  </ul>
+}
