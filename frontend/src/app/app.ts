@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CitiesService } from './services/cities.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,8 +23,9 @@ export class App implements OnInit {
   private search$ = new Subject<string>();
 
   cities: City[] = [];
-  error: string | null = null;
-  isLoading = false;
+
+  error = signal<string | null>(null);
+  isLoading = signal(false);
 
   search = '';
   continent = '';
@@ -49,8 +50,8 @@ export class App implements OnInit {
           this.continent = params['continent'] || '';
           this.sort = params['sort'] || '';
 
-          this.error = null;
-          this.isLoading = true;
+          this.error.set(null);
+          this.isLoading.set(true);
 
           return this.citiesService.getCities({
             search: this.search,
@@ -63,12 +64,12 @@ export class App implements OnInit {
       .subscribe({
         next: (res) => {
           this.cities = res.data;
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
         error: () => {
           this.cities = [];
-          this.error = 'Failed to load cities';
-          this.isLoading = false;
+          this.error.set('Failed to load cities');
+          this.isLoading.set(false);
         },
       });
   }
