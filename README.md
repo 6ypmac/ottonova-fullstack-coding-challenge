@@ -19,7 +19,7 @@ Filtering and sorting are handled on the backend, while the frontend uses URL qu
 ```bash
 cd backend
 npm install
-npm run start
+npm start
 ```
 
 ### Frontend
@@ -60,8 +60,9 @@ npm start
 ## UX considerations
 
 - Loading state while fetching data
-- Disabled inputs during requests to prevent inconsistent state
+- UI remains responsive during requests; previous requests are cancelled using RxJS switchMap
 - Empty state when no results are found
+- Error state is displayed when the request fails
 
 ---
 

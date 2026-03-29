@@ -13,7 +13,6 @@ export class FiltersComponent {
   @Input() continent = '';
   @Input() sort = '';
   @Input() continents: string[] = [];
-  @Input() isLoading = false;
 
   @Output() searchChange = new EventEmitter<string>();
   @Output() continentChange = new EventEmitter<string>();
