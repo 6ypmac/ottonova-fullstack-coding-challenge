@@ -1,14 +1,14 @@
-import { Component, OnInit, inject, DestroyRef, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { City } from './models/city';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { City } from './models/city';
 
-import { CitiesService } from './services/cities.service';
-import { FiltersComponent } from './components/filters/filters.component';
 import { CitiesListComponent } from './components/cities-list/cities-list.component';
+import { FiltersComponent } from './components/filters/filters.component';
+import { CitiesService } from './services/cities.service';
 
 @Component({
   selector: 'app-root',

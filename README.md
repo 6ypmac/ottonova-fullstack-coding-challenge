@@ -1,14 +1,75 @@
 # Ottonova Fullstack Coding Challenge
 
-This project contains a simple fullstack application:
+## Overview
 
-- Backend: Node.js REST API
-- Frontend: Angular application
+A small fullstack application to explore a cities dataset with search, filtering and sorting.
+The backend exposes a REST API, while the frontend provides a simple UI to interact with the data.
+
+- Backend: Node.js (Express)
+- Frontend: Angular
+
+Filtering and sorting are handled on the backend, while the frontend uses URL query params as a single source of truth.
+
+---
+
+## Run locally
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run start
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
 
 ## Project structure
 
 /backend — REST API
 /frontend — Angular app
+
+---
+
+## Backend
+
+- Node.js (Express)
+- In-memory dataset (JSON)
+- Supports search, filtering and sorting via query params
+- Validates query parameters (e.g. sort format)
+
+---
+
+## Frontend
+
+- Angular standalone components
+- URL query params used for state (search, filters, sorting)
+- RxJS for async data flow
+- Signals for UI state (loading, error)
+
+---
+
+## UX considerations
+
+- Loading state while fetching data
+- Disabled inputs during requests to prevent inconsistent state
+- Empty state when no results are found
+
+---
+
+## Architecture decisions
+
+- Filtering and sorting are handled on the backend to avoid duplicating logic in the frontend
+- URL query params are used as the single source of truth so state can be shared via link
+- Components are split into container and presentational to isolate data logic from UI
 
 ## API
 
@@ -28,16 +89,12 @@ Response format is consistent for both success and error cases.
 - `sort` (optional)  
   Format: `population:asc` or `population:desc`
 
----
-
 ### Behavior
 
 - Search is case-insensitive
 - Continent filter is case-insensitive
 - Invalid sort parameter returns HTTP 400
 - If no filters are provided, all cities are returned
-
----
 
 ### Examples
 
@@ -48,8 +105,6 @@ GET /cities?continent=Europe
 GET /cities?search=yo&continent=Asia
 GET /cities?sort=population:desc
 ```
-
----
 
 ### Response
 
@@ -67,8 +122,6 @@ GET /cities?sort=population:desc
   "total": 1
 }
 ```
-
----
 
 ### Errors
 
