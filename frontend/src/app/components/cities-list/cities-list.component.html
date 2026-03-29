@@ -1,9 +1,13 @@
-<ul class="cities-list">
-  @for (city of cities; track city.name) {
-    <li>
-      <strong>{{ city.name }}</strong>
-      <span>{{ city.country }}</span>
-      <span class="population">{{ city.population }}</span>
-    </li>
-  }
-</ul>
+@if (cities.length === 0) {
+  <p class="empty">No cities found</p>
+} @else {
+  <ul class="cities-list">
+    @for (city of cities; track city.name) {
+      <li>
+        <strong>{{ city.name }}</strong>
+        <span>{{ city.country }}</span>
+        <span class="population">{{ city.population }}</span>
+      </li>
+    }
+  </ul>
+}

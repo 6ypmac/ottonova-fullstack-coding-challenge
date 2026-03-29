@@ -4,9 +4,10 @@
     placeholder="Search..."
     [(ngModel)]="search"
     (ngModelChange)="onSearch($event)"
+    [disabled]="isLoading"
   />
 
-  <select [(ngModel)]="continent" (ngModelChange)="onChange($event)">
+  <select [(ngModel)]="continent" (ngModelChange)="onChange($event)" [disabled]="isLoading">
     <option value="">All continents</option>
 
     @for (continent of continents; track continent) {

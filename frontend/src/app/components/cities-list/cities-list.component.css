@@ -13,3 +13,9 @@
 .population {
   margin-left: auto;
 }
+
+.empty {
+  text-align: center;
+  color: #666;
+  padding: 1rem 0;
+}
