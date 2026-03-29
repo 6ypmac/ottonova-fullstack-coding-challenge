@@ -8,7 +8,7 @@ The backend exposes a REST API, while the frontend provides a simple UI to inter
 - Backend: Node.js (Express)
 - Frontend: Angular
 
-Filtering and sorting are handled on the backend, while the frontend uses URL query params as a single source of truth.
+Filtering and sorting are handled on the backend to keep the frontend simple and avoid duplicated logic.
 
 ---
 

@@ -72,7 +72,7 @@ export class App implements OnInit {
         },
         error: () => {
           this.cities = [];
-          this.error.set('Failed to load cities');
+          this.error.set('Failed to load cities. Please try again.');
           this.isLoading.set(false);
         },
       });
