@@ -21,15 +21,7 @@
     }
 
     @if (!isLoading() && !error()) {
-      <ul class="cities-list">
-        @for (city of cities; track city.name) {
-          <li>
-            <strong>{{ city.name }}</strong>
-            <span>{{ city.country }}</span>
-            <span class="population">{{ city.population }}</span>
-          </li>
-        }
-      </ul>
+      <app-cities-list [cities]="cities"></app-cities-list>
     }
   </div>
 </div>

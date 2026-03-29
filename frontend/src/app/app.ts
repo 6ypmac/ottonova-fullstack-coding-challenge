@@ -8,11 +8,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { CitiesService } from './services/cities.service';
 import { FiltersComponent } from './components/filters/filters.component';
+import { CitiesListComponent } from './components/cities-list/cities-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, FiltersComponent],
+  imports: [FormsModule, FiltersComponent, CitiesListComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

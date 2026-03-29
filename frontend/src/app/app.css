@@ -24,19 +24,3 @@ h1 {
 .status.error {
   color: red;
 }
-
-.cities-list {
-  list-style: none;
-  padding: 0;
-}
-
-.cities-list li {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.25rem 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.population {
-  margin-left: auto;
-}
