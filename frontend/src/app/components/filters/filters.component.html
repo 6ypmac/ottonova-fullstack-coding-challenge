@@ -1,0 +1,22 @@
+<div class="controls">
+  <input
+    type="text"
+    placeholder="Search..."
+    [(ngModel)]="search"
+    (ngModelChange)="onSearch($event)"
+  />
+
+  <select [(ngModel)]="continent" (ngModelChange)="onChange($event)">
+    <option value="">All continents</option>
+
+    @for (continent of continents; track continent) {
+      <option [value]="continent">{{ continent }}</option>
+    }
+  </select>
+
+  <select [(ngModel)]="sort" (ngModelChange)="onSort($event)">
+    <option value="">No sorting</option>
+    <option value="population:asc">Population &uparrow;</option>
+    <option value="population:desc">Population &downarrow;</option>
+  </select>
+</div>

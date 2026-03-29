@@ -1,28 +1,15 @@
 <div class="container">
   <h1>Cities</h1>
 
-  <div class="controls">
-    <input
-      type="text"
-      placeholder="Search..."
-      [(ngModel)]="search"
-      (ngModelChange)="onSearchInput($event)"
-    />
-
-    <select [(ngModel)]="continent" (ngModelChange)="onContinentChange($event)">
-      <option value="">All continents</option>
-
-      @for (continent of continents; track continent) {
-        <option [value]="continent">{{ continent }}</option>
-      }
-    </select>
-
-    <select [(ngModel)]="sort" (ngModelChange)="onSortChange($event)">
-      <option value="">No sorting</option>
-      <option value="population:asc">Population &uparrow;</option>
-      <option value="population:desc">Population &downarrow;</option>
-    </select>
-  </div>
+  <app-filters
+    [search]="search"
+    [continent]="continent"
+    [sort]="sort"
+    [continents]="continents"
+    (searchChange)="onSearchInput($event)"
+    (continentChange)="onContinentChange($event)"
+    (sortChange)="onSortChange($event)"
+  ></app-filters>
 
   <div class="content">
     @if (isLoading()) {

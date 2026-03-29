@@ -1,16 +1,18 @@
 import { Component, OnInit, inject, DestroyRef, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CitiesService } from './services/cities.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { City } from './models/city';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { CitiesService } from './services/cities.service';
+import { FiltersComponent } from './components/filters/filters.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, FiltersComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
