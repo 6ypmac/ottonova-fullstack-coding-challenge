@@ -23,6 +23,7 @@ export class App implements OnInit {
   private search$ = new Subject<string>();
 
   cities: City[] = [];
+  continents = ['Africa', 'Asia', 'Australia', 'Europe', 'North America', 'South America'];
 
   error = signal<string | null>(null);
   isLoading = signal(false);
